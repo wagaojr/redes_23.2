@@ -2,7 +2,7 @@
 
 import socket
 import threading
-import os 
+import os
 import time
 
 PORTA = 18
@@ -23,16 +23,19 @@ def handler(conn, addr):
     conectado = True
     while conectado:
         msg_length = conn.recv(HEADER).decode(FORMAT)
-        print(msg_length)
-        if msg_length:
-            msg_length = int(msg_length)
-            msg = conn.recv(msg_length).decode(FORMAT)
-            if msg == DISCONNECT:
-                conectado = False
 
-            print(f'[{time.ctime()}][{addr}]: {msg}')
-            conn.send('msg recebida'.encode(FORMAT))
-        
+        if not msg_length:  # Verifica se a mensagem está vazia, o que indica uma desconexão inesperada
+            print(f'[CONEXÃO ENCERRADA]: {addr}')
+            break
+
+        msg_length = int(msg_length)
+        msg = conn.recv(msg_length).decode(FORMAT)
+        if msg == DISCONNECT:
+            conectado = False
+
+        print(f'[{time.ctime()}][{addr}]: {msg}')
+        conn.send('msg recebida'.encode(FORMAT))
+
     conn.close()
 
 def start():
