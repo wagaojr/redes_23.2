@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-############### BIBLIOTECAS ##################
+############### Bibliotecas ##################
 
 import socket
 import threading
@@ -20,7 +20,7 @@ DISCONNECT = ':D'
 
 ##############################################
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #Cria um socket do servidor usando a família de endereços IPv4 (AF_INET) e o protocolo TCP (SOCK_STREAM).
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #Cria um socket do servidor.
 
 server.bind(ADDR) #Liga o servidor ao endereço
 
