@@ -41,6 +41,7 @@ def handler(conn, addr):
         msg = conn.recv(msg_length).decode(FORMAT) #Recebe a mensagem do cliente com base no comprimento recebido.
 
         if msg == DISCONNECT: #Quando recebe a mensagem de desconexão define a conexão como False
+            print(f'[CONEXÃO ENCERRADA]: {addr}') 
             conectado = False
 
         print(f'[{time.ctime()}][{addr}]: {msg}') #Exibe a mensagem do cliente
