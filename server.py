@@ -11,7 +11,7 @@ import time
 
 ###### Definições feitas em turma ############
 
-PORTA = 18
+PORTA = 18000
 SERVER = 'localhost'
 ADDR = (SERVER, PORTA)
 HEADER = 64
