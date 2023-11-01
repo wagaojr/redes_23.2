@@ -24,31 +24,44 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #Cria um socket do se
 
 server.bind(ADDR) #Liga o servidor ao endereço
 
+conexoes = []
+
 def handler(conn, addr):
-    print(f'[NOVA CONEXÃO]: {addr} se conectou!')
+    try:  
+     print(f'[NOVA CONEXÃO]: {addr} se conectou!')
 
-    conectado = True
-    while conectado:
+     conectado = True
+     conexoes.append(conn)
+
+     while conectado:
         
-        msg_length = conn.recv(HEADER).decode(FORMAT) #Recebe o comprimento da mensagem codificado e decodifica para uma string.
+         msg_length = conn.recv(HEADER).decode(FORMAT) #Recebe o comprimento da mensagem codificado e decodifica para uma string.
 
-        if not msg_length: #Verifica se a mensagem está vazia, o que indica uma desconexão inesperada.
-            print(f'[CONEXÃO ENCERRADA]: {addr}') 
-            break
+         if not msg_length: #Verifica se a mensagem está vazia, o que indica uma desconexão inesperada.
+             print(f'[CONEXÃO ENCERRADA]: {addr}') 
+             break
 
-        msg_length = int(msg_length)
+         msg_length = int(msg_length)
 
-        msg = conn.recv(msg_length).decode(FORMAT) #Recebe a mensagem do cliente com base no comprimento recebido.
+         msg = conn.recv(msg_length).decode(FORMAT) #Recebe a mensagem do cliente com base no comprimento recebido.
 
-        if msg == DISCONNECT: #Quando recebe a mensagem de desconexão define a conexão como False
-            print(f'[CONEXÃO ENCERRADA]: {addr}') 
-            conectado = False
+         if msg == DISCONNECT: #Quando recebe a mensagem de desconexão define a conexão como False
+             print(f'[CONEXÃO ENCERRADA]: {addr}') 
+             conectado = False
 
-        print(f'[{time.ctime()}][{addr}]: {msg}') #Exibe a mensagem do cliente
+         print(f'[{time.ctime()}][{addr}]: {msg}') #Exibe a mensagem do cliente
 
-        conn.send('msg recebida'.encode(FORMAT)) #Exibe a mesma mensagem que recebeu do cliente
+         # Envia a mensagem para todos os clientes
+         for conexao in conexoes:
+             conexao.send(f'[{time.ctime()}][{addr}]: {msg}'.encode(FORMAT))
 
-    conn.close() #Fecha a conexão
+    except Exception as e:
+        print(f"Erro:{e}")
+
+    finally:
+        if conn in conexoes:
+            conexoes.remove(conn)
+        conn.close()        
 
 def start():
     
