@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import socket
+import threading
 
 ###### Definições feitas em turma ############
 
@@ -33,7 +34,7 @@ def send(msg):
     client.send(message)
     ###
 
-    print(client.recv(2048).decode(FORMAT)) #Aguarda uma resposta do servidor
+    print(client.recv(HEADER).decode(FORMAT)) #Aguarda uma resposta do servidor
 
 while True:
     entry = input('Sua mensagem: ')
