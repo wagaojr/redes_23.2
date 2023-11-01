@@ -6,7 +6,7 @@ import threading
 ###### Definições feitas em turma ############
 
 HEADER = 64
-PORT = 18
+PORT = 18000
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = ':D'
 SERVER = 'localhost'
